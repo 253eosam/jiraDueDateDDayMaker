@@ -3,12 +3,17 @@ function observeDOMChanges() {
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.addedNodes.length > 0) {
-        updateDueDates();
+        play()
       }
     });
   });
 
   observer.observe(document.body, config);
+}
+
+function play () {
+  updateDueDates();
+  updateIssueStatusColors();
 }
 
 function updateDueDates() {
@@ -52,5 +57,30 @@ function updateDueDates() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', updateDueDates);
+function updateIssueStatusColors() {
+  const statusElements = document.querySelectorAll('div[data-testid="platform-card.common.ui.custom-fields.card-custom-field.text-card-custom-field-content.field"]');
+  
+  statusElements.forEach(statusEl => {
+    const statusText = statusEl.textContent.trim().toUpperCase();
+    
+    switch(statusText) {
+      case 'DEV':
+        statusEl.style.fontWeight = 600;
+        statusEl.style.color = '#4A90E2'; // 파란색
+        break;
+      case 'RELEASE':
+        statusEl.style.fontWeight = 600;
+        statusEl.style.color = '#7ED321'; // 녹색
+        break;
+      case 'STG':
+        statusEl.style.fontWeight = 600;
+        statusEl.style.color = '#D0021B'; // 주황색
+        break;
+      default:
+        statusEl.style.color = '#9B9B9B'; // 기본 색상 (회색)
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', play);
 observeDOMChanges();
