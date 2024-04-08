@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Jira D-Day Marker",
+  "version": "1.0",
+  "description": "Make a d-day of due dates on Jira Kanban board based on conditions.",
+  "content_scripts": [
+    {
+      "matches": ["*://*.atlassian.net/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "48": "icon.png"
+  }
+}
